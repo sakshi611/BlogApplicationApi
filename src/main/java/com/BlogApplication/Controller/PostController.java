@@ -77,7 +77,7 @@ public class PostController {
 
 	@GetMapping("/posts")
 	public ResponseEntity<List<PostDto>> getAllPost(
-			@RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
 			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
 			){
 		
