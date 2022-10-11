@@ -16,6 +16,7 @@ import com.BlogApplication.Entity.Post;
 import com.BlogApplication.Entity.User;
 import com.BlogApplication.Exceptions.ResourceNotFoundException;
 import com.BlogApplication.Payload.PostDto;
+import com.BlogApplication.Payload.PostResponse;
 import com.BlogApplication.Repository.CategoryRepo;
 import com.BlogApplication.Repository.PostRepo;
 import com.BlogApplication.Repository.UserRepo;
@@ -72,7 +73,7 @@ public class PostServiceimpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPost(Integer pageNumber, Integer pageSize) {
+	public PostResponse getAllPost(Integer pageNumber, Integer pageSize) {
 		
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		
@@ -80,8 +81,17 @@ public class PostServiceimpl implements PostService {
 	
 		List<Post> posts = pagePost.getContent();
 		
-		List<PostDto> postDto = posts.stream().map((post)->this.modelMapper.map(posts, PostDto.class)).collect(Collectors.toList());
-		return postDto;
+		List<PostDto> postDto = posts.stream().map((post)->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+		
+		
+		PostResponse postResponse = new PostResponse();
+		postResponse.setContent(postDto);
+		postResponse.setPageNumber(pagePost.getNumber()); 
+		postResponse.setPageSize(pagePost.getSize());
+		postResponse.setTotalElements(pagePost.getTotalElements());
+		postResponse.setTotalPages(pagePost.getTotalPages());
+		postResponse.setLastPage(pagePost.isLast());
+		return postResponse;
 	}
 
 	@Override
@@ -96,7 +106,7 @@ public class PostServiceimpl implements PostService {
 		Category category = this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("category", "Category Id", categoryId));
 		List<Post> posts = this.postRepo.findByCategory(category);
 		
-		List<PostDto> postDto = posts.stream().map((post)->this.modelMapper.map(posts, PostDto.class)).collect(Collectors.toList());
+		List<PostDto> postDto = posts.stream().map(post->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
 		return postDto;
 	}
 
@@ -106,7 +116,7 @@ public class PostServiceimpl implements PostService {
 		
 		List<Post> posts = this.postRepo.findByUser(user);
 		
-		List<PostDto> postDto = posts.stream().map((post)-> this.modelMapper.map(posts, PostDto.class)).collect(Collectors.toList());
+		List<PostDto> postDto = posts.stream().map((post)-> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
 		return postDto;
 	}
 
