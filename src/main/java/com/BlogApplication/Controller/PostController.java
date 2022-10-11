@@ -80,10 +80,11 @@ public class PostController {
 	public ResponseEntity<PostResponse> getAllPost(
 			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
 			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
-			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy
+			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+			@RequestParam(value = "sortOrder", defaultValue = "asc", required = false) String sortOrder
 			){
 		
-		PostResponse allPost = this.postService.getAllPost(pageNumber, pageSize, sortBy);
+		PostResponse allPost = this.postService.getAllPost(pageNumber, pageSize, sortBy, sortOrder);
 		return new ResponseEntity<PostResponse>(allPost, HttpStatus.OK);
 	}
 }
