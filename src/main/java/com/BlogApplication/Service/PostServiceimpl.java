@@ -1,5 +1,6 @@
 package com.BlogApplication.Service;
 
+import  org.springframework.data.domain.Sort;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import com.BlogApplication.Payload.PostResponse;
 import com.BlogApplication.Repository.CategoryRepo;
 import com.BlogApplication.Repository.PostRepo;
 import com.BlogApplication.Repository.UserRepo;
+
 
 @Service
 public class PostServiceimpl implements PostService {
@@ -73,9 +75,9 @@ public class PostServiceimpl implements PostService {
 	}
 
 	@Override
-	public PostResponse getAllPost(Integer pageNumber, Integer pageSize) {
+	public PostResponse getAllPost(Integer pageNumber, Integer pageSize, String sortBy) {
 		
-		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
 		
 		Page<Post> pagePost = this.postRepo.findAll(pageable);
 	
