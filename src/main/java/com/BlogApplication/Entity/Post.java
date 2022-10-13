@@ -25,7 +25,7 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer postId;
 	
-	@Column(name = "post_title", length = 100, nullable = false)
+	@Column( length = 100, nullable = false)
 	private String title;
 	
 	private String imageName;

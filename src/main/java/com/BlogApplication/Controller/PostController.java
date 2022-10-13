@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.BlogApplication.Config.AppConstants;
 import com.BlogApplication.Entity.Post;
 import com.BlogApplication.Payload.ApiResponse;
 import com.BlogApplication.Payload.PostDto;
@@ -78,13 +79,21 @@ public class PostController {
 
 	@GetMapping("/posts")
 	public ResponseEntity<PostResponse> getAllPost(
-			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
-			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-			@RequestParam(value = "sortOrder", defaultValue = "asc", required = false) String sortOrder
+			@RequestParam(value = "pageNumber", defaultValue = AppConstants.Page_Number, required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = AppConstants.Page_Size, required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = AppConstants.Sort_By, required = false) String sortBy,
+			@RequestParam(value = "sortOrder", defaultValue = AppConstants.Sort_Dir, required = false) String sortOrder
 			){
 		
 		PostResponse allPost = this.postService.getAllPost(pageNumber, pageSize, sortBy, sortOrder);
 		return new ResponseEntity<PostResponse>(allPost, HttpStatus.OK);
 	}
+	
+	@GetMapping("/posts/search/{keyword}")
+	public ResponseEntity<List<PostDto>> searchPosts(@PathVariable("keyword") String keyword) {
+		List<PostDto> result = this.postService.searchPosts(keyword);
+		return new ResponseEntity<List<PostDto>>(result ,HttpStatus.OK);
+		
+	}
+	
 }
